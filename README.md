@@ -3,12 +3,6 @@
 **agz** is a high-performance, memory-efficient, and domain-agnostic archival tool built in Rust.
 It utilizes a hybrid approach to data compression by combining Heuristic Adaptive Pre-conditioning with the Zstandard (Zstd) entropy coder. **agz** dynamically analyzes data to identify spatial and linear correlations, reducing Shannon entropy before final compression.
 
-## Technical Implementation Details
-
-* **Engine 0 (ZstdOnly):** Used for high-entropy data (already compressed files, encrypted data).
-* **Engine 1 (Agz1D):** Optimized for multi-channel interleaved data like raw PCM audio.
-* **Engine 2 (Agz2D):** Designed for 2D spatial data like uncompressed bitmaps or structured sensor arrays.
-
 ## Core Concept
 
 The primary strength of **agz** is its ability to flatten data variance in uncompressed binary formats (like raw audio, telemetry, or bitmaps) where standard compression often fails.
@@ -25,6 +19,12 @@ The process follows a 3-stage pipeline:
 * **Memory-Efficient:** Implements a streaming I/O architecture with $O(1)$ memory complexity per thread for archiving and $O(M)$ for extraction (where $M$ is the largest single file).
 * **Highly Parallelized:** Leverages the Rayon framework for multi-core analysis and a dedicated MPSC channel-based writer thread to prevent I/O bottlenecks.
 * **Lossless Integrity:** Mathematically verified reconstruction through inverse differential pulse-code modulation (DPCM).
+
+## Technical Implementation Details
+
+* **Engine 0 (ZstdOnly):** Used for high-entropy data (already compressed files, encrypted data).
+* **Engine 1 (Agz1D):** Optimized for multi-channel interleaved data like raw PCM audio.
+* **Engine 2 (Agz2D):** Designed for 2D spatial data like uncompressed bitmaps or structured sensor arrays.
 
 ## Performance Comparison
 
@@ -60,12 +60,6 @@ cargo build --release
 ```bash
 ./target/release/agz unpack <input.agz> <output_directory>
 ```
-
-## Technical Implementation Details
-
-* **Engine 0 (ZstdOnly):** Used for high-entropy data (already compressed files, encrypted data).
-* **Engine 1 (Agz1D):** Optimized for multi-channel interleaved data like raw PCM audio.
-* **Engine 2 (Agz2D):** Designed for 2D spatial data like uncompressed bitmaps or structured sensor arrays.
 
 ## License
 
